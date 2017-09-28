@@ -18,9 +18,11 @@ static struct task_struct *name_task_struct(char *name)
 {
     struct task_struct *task;
 
+    read_lock(&tasklist_lock);
     for_each_process(task)
         if (!strcmp(task->comm, name))
             return task;
+    read_unlock(&tasklist_lock);
 
     return NULL;
 }
